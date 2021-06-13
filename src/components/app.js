@@ -1,13 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AppRouter from 'components/Router';
 import { authService } from 'fbase';
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(authService.currentUser);
+  let [init, setInit] = useState(false);
+  let [isLoggedIn, setIsLoggedIn] = useState(false);
+  let [userObj, setUserObj] = useState(null);
+  useEffect(() => {
+    authService.onAuthStateChanged((user) => {
+      if (user) {
+        setIsLoggedIn(true);
+        setUserObj(user);
+      } else {
+        setIsLoggedIn(false);
+      }
+      setInit(true);
+    });
+  }, []);
   return (
     <>
-      <AppRouter isLoggedIn={isLoggedIn} />
-      <footer>&copy; {new Date().getFullYear()} Pratice-firebase</footer>
+      {init ? <AppRouter isLoggedIn={isLoggedIn} userObj={userObj} /> : "Initializing...."}
     </>
   );
 }
