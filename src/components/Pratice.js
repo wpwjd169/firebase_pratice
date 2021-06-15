@@ -35,7 +35,9 @@ let Pratice = ({ praticeObj, isOwner }) => {
                 </>
             ) : (
                 <>
-                    <h4>{praticeObj.text}</h4>{isOwner && (
+                    <h4>{praticeObj.text}</h4>
+                    {praticeObj.attachmentUrl && <img src={praticeObj.attachmentUrl} width="50px" height="50px" />}
+                    {isOwner && (
                         <>
                             <button onClick={onDeleteClick}>Delete Pratice</button>
                             <button onClick={toggleEditing}>Edit Pratice</button>
