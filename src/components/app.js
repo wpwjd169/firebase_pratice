@@ -10,16 +10,35 @@ function App() {
     authService.onAuthStateChanged((user) => {
       if (user) {
         setIsLoggedIn(true);
-        setUserObj(user);
+        // setUserObj(user);
+        setUserObj({
+          displayName: user.displayName,
+          uid: user.uid,
+          updateProfile: (args) => user.updateProfile(args),
+
+        });
       } else {
-        setIsLoggedIn(false);
+        setUserObj(null);
       }
       setInit(true);
     });
   }, []);
+  let refreshUser = () => {
+    let user = authService.currentUser;
+    //setUserObj(Object.assign({}, user));
+    setUserObj({
+      displayName: user.displayName,
+      uid: user.uid,
+      updateProfile: (args) => user.updateProfile(args),
+
+    });
+  }
   return (
     <>
-      {init ? <AppRouter isLoggedIn={Boolean(userObj)} userObj={userObj} /> : "Initializing...."}
+      {init ? <AppRouter
+        refreshUser={refreshUser}
+        isLoggedIn={Boolean(userObj)}
+        userObj={userObj} /> : "Initializing...."}
     </>
   );
 }

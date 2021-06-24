@@ -1,4 +1,4 @@
-import { dbSerivce } from "fbase";
+import { dbSerivce, storageService } from "fbase";
 import React, { useState } from "react";
 
 let Pratice = ({ praticeObj, isOwner }) => {
@@ -9,6 +9,7 @@ let Pratice = ({ praticeObj, isOwner }) => {
         if (ok) {
             //delete 트윗
             await dbSerivce.doc(`pratices/${praticeObj.id}`).delete();
+            await storageService.refFromURL(praticeObj.attachmentUrl).delete();
         }
     };
     let toggleEditing = () => setEditing((prev) => !prev);
